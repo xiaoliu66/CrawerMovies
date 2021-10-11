@@ -4,7 +4,7 @@ import uuid
 import requests
 from bs4 import BeautifulSoup
 from redisbloom.client import Client
-from Crawer import DataBaseUtil
+import DataBaseUtil
 
 print("======开始清除redis上次残存的数据======")
 rb = Client(host='localhost', port=6379)
@@ -13,6 +13,8 @@ print("======清除成功！======")
 
 print("======开始将数据加载到redis======")
 # 先将数据库中的数据加载到redis中
+# 默认的error_rate(误判率)是0.01，initial_size（表示预计放入的元素数量）是100。
+rb.bfCreate('urls', 0.01, 1000)
 sql = """select url from t_web_crawler"""
 all = DataBaseUtil.UsingMysql().__enter__().fetch_all(sql)
 for i in all:
@@ -46,7 +48,7 @@ num = 0
 db = DataBaseUtil.UsingMysql().__enter__()
 for a in target:
     tempLink = a.get('href')
-    # 过滤
+    # 过滤广告
     if tempLink.find("20160320") >= 0:
         continue
     # 截取链接中的日期
