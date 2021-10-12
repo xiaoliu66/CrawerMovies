@@ -45,6 +45,8 @@ num = 0
 # ws['C1'] = "网址"
 # ws['D1'] = "磁力链接"
 
+list = {}  # 电影标题和网址
+
 db = DataBaseUtil.UsingMysql().__enter__()
 for a in target:
     tempLink = a.get('href')
@@ -59,7 +61,7 @@ for a in target:
 
     # 如果该url存在，则跳出本次循环
     if rb.bfExists('urls', href) == 1:
-        print(href + " 已经存在。")
+        # print(href + " 已经存在。")
         continue
 
     context1 = requests.get(href)
@@ -80,6 +82,8 @@ for a in target:
     modify_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     is_delete = 'N'
 
+    list[name] = href
+
     sql = "INSERT INTO t_web_crawler(id, date, name, url, magnet, create_time, modify_time, is_delete, context)\
                VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
           (uid, date, name, href, magnet, create_time, modify_time, is_delete, context)
@@ -91,7 +95,7 @@ for a in target:
     # ws.cell(row=num + 2, column=3).value = href
     # ws.cell(row=num + 2, column=4).value = magnet
 
-    print(href + " ---> " + detail_title.text)
+    print(href + " ---> " + name)
 
     num = num + 1
 
@@ -105,3 +109,13 @@ print("爬虫任务结束--->" + time.strftime("%Y-%m-%d %H:%M:%S", time.localti
 db.__exit__()
 # 将结果保存到excel中
 # wb.save('movies.xlsx')
+print('===='+ time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) +' 开始推送微信消息 ====')
+url = "https://sctapi.ftqq.com/.send"
+if num > 0 :
+    desp = '本次爬取到 ' + str(num) + '个电影资源。\n分别是：'
+    for k, v in list.items():
+        desp += k + " url: " + v + '\n'
+    datas = {"title": "有新电影资源可供下载", "desp": desp}
+    print("微信推送信息：" + str(datas))
+    res = requests.get(url, datas)
+print('===='+ time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) +' 推送微信消息结束 ====')
