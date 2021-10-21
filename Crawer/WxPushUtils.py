@@ -5,8 +5,8 @@
 import requests
 import json
 
-access_token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?access_token='
-send_message_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?'
+access_token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?'
+send_message_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token='
 
 
 def get_access_token(corpid, corpsecret):
