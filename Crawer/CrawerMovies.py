@@ -4,6 +4,7 @@ import uuid
 import requests
 from bs4 import BeautifulSoup
 from redisbloom.client import Client
+import WxPushUtils
 import DataBaseUtil
 
 print("======开始清除redis上次残存的数据======")
@@ -34,16 +35,6 @@ base_url = 'https://www.dytt8.net'
 beginTime = time.time()
 print("爬虫任务开始--->" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 num = 0
-
-# 实例化
-# wb = Workbook()
-# 激活 worksheet
-# ws = wb.active
-
-# ws['A1'] = "日期"
-# ws['B1'] = "电影名称"
-# ws['C1'] = "网址"
-# ws['D1'] = "磁力链接"
 
 list = {}  # 电影标题和网址
 
@@ -90,10 +81,6 @@ for a in target:
     print("sql：", sql)
 
     db.insert_one(sql)
-    # ws.cell(row=num + 2, column=1).value = date
-    # ws.cell(row=num + 2, column=2).value = detail_title.text
-    # ws.cell(row=num + 2, column=3).value = href
-    # ws.cell(row=num + 2, column=4).value = magnet
 
     print(href + " ---> " + name)
 
@@ -107,15 +94,15 @@ print("爬虫任务结束--->" + time.strftime("%Y-%m-%d %H:%M:%S", time.localti
 
 # 关闭数据库链接
 db.__exit__()
-# 将结果保存到excel中
-# wb.save('movies.xlsx')
-print('===='+ time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) +' 开始推送微信消息 ====')
-url = "https://sctapi.ftqq.com/.send"
-if num > 0 :
+
+print('====' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ' 开始推送微信消息 ====')
+if num > 0:
     desp = '本次爬取到 ' + str(num) + '个电影资源。\n分别是：'
     for k, v in list.items():
         desp += k + " url: " + v + '\n'
-    datas = {"title": "有新电影资源可供下载", "desp": desp}
-    print("微信推送信息：" + str(datas))
-    res = requests.get(url, datas)
-print('===='+ time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) +' 推送微信消息结束 ====')
+    # datas = {"title": "有新电影资源可供下载", "desp": desp}
+    # print("微信推送信息：" + str(datas))
+    # res = requests.get(url, datas)
+    access_token = WxPushUtils.get_access_token('自己的企业id', '自己的应用秘钥')
+    WxPushUtils.send_text_message(access_token, 1000002, desp)
+print('====' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ' 推送微信消息结束 ====')
