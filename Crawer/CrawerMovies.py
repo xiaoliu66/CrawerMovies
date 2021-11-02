@@ -21,9 +21,9 @@ all = DataBaseUtil.UsingMysql().__enter__().fetch_all(sql)
 for i in all:
     items = i['url']
     rb.bfAdd('urls', items)
-print("======数据加载到redis中成功！======")
+print("======"+str(len(all))+"条数据加载到redis中成功！======")
 
-url = 'https://www.dytt8.net/index.htm'
+url = 'https://www.dytt8.net/index1.html'
 # 伪装成浏览器去发送请求
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'
@@ -58,7 +58,7 @@ for a in target:
     if rb.bfExists('urls', href) == 1:
         # print(href + " 已经存在。")
         continue
-
+    print(href)
     context1 = requests.get(href)
     context1.encoding = 'gbk'
     detail_html = context1.text
@@ -75,8 +75,8 @@ for a in target:
     image_url = BeautifulSoup(detail_html, 'lxml').find('div', id='Zoom').find('img').get('src')
     # 获取电影简介
     begin = context.index("◎简　　介")
-    end = context.rindex("。")
-    movie_synopsis = context[begin + 5:end + 1]
+    end = context.rindex("磁力链")
+    movie_synopsis = context[begin + 5:end]
 
     uid = str(uuid.uuid4()).replace('-', '')
     name = detail_title.text
