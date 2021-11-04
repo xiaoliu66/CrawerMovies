@@ -7,12 +7,12 @@ from redisbloom.client import Client
 import WxPushUtils
 import DataBaseUtil
 
-print("======开始清除redis上次残存的数据======")
+print("====== " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " 开始清除redis上次残存的数据======")
 rb = Client(host='localhost', port=6379)
 rb.delete('urls')  # 每次重新加载时，先删除上次key的信息
-print("======清除成功！======")
+print("====== " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " 清除成功！======")
 
-print("======开始将数据加载到redis======")
+print("====== " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " 开始将数据加载到redis======")
 # 先将数据库中的数据加载到redis中
 # 默认的error_rate(误判率)是0.01，initial_size（表示预计放入的元素数量）是100。
 rb.bfCreate('urls', 0.01, 1000)
@@ -21,9 +21,9 @@ all = DataBaseUtil.UsingMysql().__enter__().fetch_all(sql)
 for i in all:
     items = i['url']
     rb.bfAdd('urls', items)
-print("======"+str(len(all))+"条数据加载到redis中成功！======")
+print("====== " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " " + str(len(all)) + "条数据加载到redis中成功！======")
 
-url = 'https://www.dytt8.net/index1.html'
+url = 'https://www.dytt8.net/index2.htm'
 # 伪装成浏览器去发送请求
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'
