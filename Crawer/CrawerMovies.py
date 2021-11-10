@@ -111,9 +111,7 @@ db.__exit__()
 print('====' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ' 开始推送微信消息 ====')
 if num > 0:
     desp = '本次爬取到 ' + str(num) + '个电影资源。\n分别是：'
-    # datas = {"title": "有新电影资源可供下载", "desp": desp}
-    # print("微信推送信息：" + str(datas))
-    # res = requests.get(url, datas)
+
     access_token = WxPushUtils.get_access_token('自己的企业id', '自己的应用秘钥')
     WxPushUtils.send_text_message(access_token, 1000002, desp)
 
