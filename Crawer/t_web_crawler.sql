@@ -5,18 +5,18 @@ drop table if exists t_web_crawler;
 /*==============================================================*/
 create table t_web_crawler
 (
-   id                   varchar(32) not null comment 'Ö÷¼ü',
-   date                 varchar(8) comment '¶ÌÈÕÆÚ',
-   name                 varchar(100) comment 'µçÓ°Ãû³Æ',
-   url                  varchar(100) comment 'ÍøÒ³µØÖ·',
-   magnet               varchar(500) comment '´ÅÁ¦Á´½Ó',
-   context              varchar(5000) comment 'µçÓ°Ïà¹ØÄÚÈİ',
-   image_url            varchar(200)  comment 'µçÓ°Í¼Æ¬ÍøÖ·',
-   movie_synopsis       varchar(5000) comment 'µçÓ°¼ò½é',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   modify_time          datetime comment 'ĞŞ¸ÄÊ±¼ä',
-   is_delete            char(1) comment 'ÊÇ·ñÉ¾³ı(Âß¼­É¾³ı) N£º·ñ  Y£ºÊÇ',
+   id                   varchar(32) not null comment 'ä¸»é”®',
+   date                 varchar(8) comment 'çŸ­æ—¥æœŸ',
+   name                 varchar(100) comment 'ç”µå½±åç§°',
+   url                  varchar(100) comment 'ç½‘é¡µåœ°å€',
+   magnet               varchar(500) comment 'ç£åŠ›é“¾æ¥',
+   context              varchar(5000) comment 'ç”µå½±ç›¸å…³å†…å®¹',
+   image_url            varchar(200)  comment 'ç”µå½±å›¾ç‰‡ç½‘å€',
+   movie_synopsis       varchar(5000) comment 'ç”µå½±ç®€ä»‹',
+   create_time          datetime comment 'åˆ›å»ºæ—¶é—´',
+   modify_time          datetime comment 'ä¿®æ”¹æ—¶é—´',
+   is_delete            char(1) comment 'æ˜¯å¦åˆ é™¤(é€»è¾‘åˆ é™¤) Nï¼šå¦  Yï¼šæ˜¯',
    primary key (id)
 );
 
-alter table t_web_crawler comment 'ÅÀ³æĞÅÏ¢±í';
+alter table t_web_crawler comment 'çˆ¬è™«ä¿¡æ¯è¡¨';
